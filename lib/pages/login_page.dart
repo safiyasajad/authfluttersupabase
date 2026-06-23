@@ -16,9 +16,7 @@ class LoginPage extends StatefulWidget{
   }
   
 class _LoginPageState extends State<LoginPage> {
-  // Creates one AuthService instance for this page.
-  // AuthService wraps the Supabase authentication calls, so this widget does
-  // not need to talk to Supabase directly.
+  //gets auth service
   final authService = AuthService();
 
   // Controller for the email input field.
