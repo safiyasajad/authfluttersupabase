@@ -21,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
 //sign up button pressed
 void signUp() async{
   //prepare data
-  final email = _emailController.text;
+  final email = _emailController.text.trim();
   final password = _passwordController.text;
   final confirmPassword = _confirmPasswordController.text;
 
@@ -36,11 +36,16 @@ void signUp() async{
   try {
     await authService.signUpWithEmailPassword(email, password);
 
-    //pop this register page
-    Navigator.pop(context); //what is this?
+    //close the register page after sign up
+    //AuthGate will decide whether to show ProfilePage or LoginPage
+    if (mounted) {
+      Navigator.pop(context);
+    }
+
   } catch (e) {
     if(mounted) {
-       ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text("Error $e")));
+       ScaffoldMessenger.of(context)
+       .showSnackBar( SnackBar(content: Text("Error $e")));
     }
   }
 
@@ -65,28 +70,31 @@ void signUp() async{
           TextField(
             controller: _passwordController,            
             decoration: const InputDecoration(labelText: "Password"),
+            obscureText: true, //hides password when typed
           ),
 
           //confirm password
           TextField(
             controller: _confirmPasswordController,            
             decoration: const InputDecoration(labelText: "Confirm Password"),
+            obscureText: true, //hides the password when typed
           ),
 
 
           const SizedBox(height: 12), //spacing between the password field and the login button
           //button 
-          ElevatedButton(onPressed: signUp, child: const Text("Sign Up")
+          ElevatedButton(onPressed: signUp, child: const Text("Sign Up"),
+
           ),
           
-          //go to register page to sign up
+          //go to login page to sign in if account already existis 
           GestureDetector(
             onTap:() => Navigator.push(
               context, 
               MaterialPageRoute(builder: (context) => const LoginPage(),
               )
             ),
-            child:Center(child: Text("ALready have an account? sign in")),
+            child:Center(child: Text("Already have an account? sign in")),
           )
         ]
       )
