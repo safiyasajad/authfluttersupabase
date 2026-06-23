@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
   void login() async{
     // Read the latest values typed into the text fields.
     // These values are passed to Supabase through AuthService.
-    final email = _emailController.text;
+    final email = _emailController.text.trim();
     final password = _passwordController.text;
 
     // Attempt to sign in using the email and password.
@@ -44,8 +44,7 @@ class _LoginPageState extends State<LoginPage> {
     try{
     await authService.signInWithEmailPassword(email, password);
     }
-    // If Supabase throws an error, show the message in a SnackBar so the user
-    // gets visible feedback instead of the app failing silently.
+
     catch (e) {
       // mounted checks that this page is still on screen before using context.
       // This avoids calling ScaffoldMessenger after the widget has been removed
@@ -63,6 +62,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Center(child: Text("Login")),
+),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 50),
         children: [
